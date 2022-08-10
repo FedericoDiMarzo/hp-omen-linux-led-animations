@@ -1,37 +1,42 @@
-HP Omen special feature control for Linux
+HP Omen keyboard color animation
 -----------------------------------------
 
-This is a version of the hp-wmi kernel module that implements some of the features of HP Omen Command Centre.
+This software enables LED keyboard animations for HP Omen PCs in Linux. In order to communicate with the hardware and change the RGB level of the different LED zones of the keyboard, this project forks from the Linux porting of the hp-omen drivers. As stated in the original repository, the drivers are still *experimental*, not widely tested, and could crash your machine. **You should thus use them at your own risk**.
 
-It's totally experimental right now, and could easily crash your machine. 
+The software was tested on my personal machine with the following configuration:
+* machine: HP OMEN Laptop 15-ek
+* os: Pop!_OS 22.04 LTS
 
-**USE AT YOUR OWN RISK**
+*THE REPOSITORY IS A WORK IN PROGRESS*
 
-Currently working:
-
-- FourZone keyboard colour control (`/sys/devices/platforms/hp-wmi/rgb-zones/zone0[0-3]`)
-- Omen hotkeys
 
 ## Installation
 
-1. Install dkms and kernel headers if needed (already present on Ubuntu)
-
-1. Run `sudo make install`
+To install the module you should first install dkms and kernel headers if needed (already present on Ubuntu).
+After doing that you can run 
+```
+sudo make install
+```
 
 Module will be built and installed, and DKMS will manage rebuilding it on kernel updates.
+If you wish to uninstall the module you can execute
+```
+sudo make uninstall
+```
 
-## Usage
+## Basic usage
+To change the color zone of the keyboard statically, you can pass the hex code of the different zones as follows
+```
+rgb_keyboard <hex0> <hex1> <hex2> <hex3>
+```
+Pro tip: you can find nice hex-ready color palettes [on this website](https://coolors.co/palettes/trending).
 
-The module creates four files in `/sys/devices/platform/hp-wmi/rgb_zones/` named `zone00 - zone03`.
+Save and load your favorite color configuration using the `-d` option. The configuration will be saved in `/sys/devices/platforms/hp-wmi/rgb-zones/rgb_default.txt`.
+```
+# saves the default color setting 
+rgb_keyboard -d <hex0> <hex1> <hex2> <hex3>
 
-To change zone highlight color, just print hex colour value in RGB format to the respective file. e.g:
-
-`sudo bash -c 'echo 00FFFF > /sys/devices/platform/hp-wmi/rgb_zones/zone00'` to get sky-blue zone 0.
-
-Omen and other hotkeys are bound to regular X11 keysyms, use your chosen desktop's hotkey manager to assign them to functions like any other key.
-
-## To do:
-
-- [ ] FourZone brightness control
-- [ ] Fan control 
+# loads the default color setting
+rgb_keyboard -d
+```
 
