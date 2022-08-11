@@ -31,10 +31,10 @@ rgb_keyboard <hex0> <hex1> <hex2> <hex3>
 ```
 Pro tip: you can find nice hex-ready color palettes [on this website](https://coolors.co/palettes/trending).
 
-Save and load your favorite color configuration using the `-d` option. The configuration will be saved in `/sys/devices/platforms/hp-wmi/rgb-zones/rgb_default.txt`.
+Save and load your favorite color configuration using the `-s` and `-d` options. The configuration will be saved in `~/rgb-zones/rgb_default.txt`.
 ```
 # saves the default color setting 
-rgb_keyboard -d <hex0> <hex1> <hex2> <hex3>
+rgb_keyboard -s <hex0> <hex1> <hex2> <hex3>
 
 # loads the default color setting
 rgb_keyboard -d
