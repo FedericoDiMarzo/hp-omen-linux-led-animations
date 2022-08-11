@@ -1,8 +1,14 @@
+SCRIPT_ORIG=scripts/rgb_keyboard.sh
+SCRIPT_DEST=/bin/rgb_keyboard
+
 install:
-	dkms install .
+	cp $(SCRIPT_ORIG) $(SCRIPT_DEST)
+	chmod +x $(SCRIPT_DEST)
+	# dkms install .
 
 uninstall:
-	dkms remove hp-omen-wmi/0.9 --all
+	rm -rf $(SCRIPT_DEST) $(RGB_DEFAULT)
+	# dkms remove hp-omen-wmi/0.9 --all
 
 all: install
 
