@@ -7,24 +7,38 @@ function usage {
     exit 1
 }
 
+# dirs
+colordir="$HOME/.rgb_default"
+colorfile="$colordir/rgb_default.txt"
+
+
 function save_default {
-    colorfile="~/.rgb_default/rgb_default.txt"
-    echo "" > $colorfile
-    echo $1 >> "$colorfile\n"
-    echo $2 >> "$colorfile\n"
-    echo $3 >> "$colorfile\n"
-    echo $4 >> "$colorfile\n"
+    mkdir -p "$colordir"
+    echo $2 > "$colorfile"
+    echo $3 >> "$colorfile"
+    echo $1 >> "$colorfile"
+    echo $4 >> "$colorfile"
+    echo "default keyboard color configuration saved"
 }
 
 function load_default {
-    echo "default keyboard colors loaded"
+    if [ -f "$colorfile" ]; then
+    count=0
+        for color in $(cat "$colorfile"); do
+            sudo bash -c "echo $color > /sys/devices/platform/hp-wmi/rgb_zones/zone0$count"
+            count=$(($count+1))
+        done
+        echo "default keyboard color configuration loaded"
+    else
+        echo "no default configuration was found"
+    fi
     exit 0
 }
 
 while getopts ":sd" o; do
     case "${o}" in
         s)
-            save_default $1 $2 $3 $4;;
+            save_default $2 $3 $4 $5;;
         d)
             load_default ;;
         *)
