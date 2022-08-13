@@ -40,8 +40,8 @@ int main() {
                 return EXIT_FAILURE);
 
     // executing as a daemon
-    // if(run_daemon() == EXIT_FAILURE)
-    //     return EXIT_FAILURE;
+    if(run_daemon() == EXIT_FAILURE)
+        return EXIT_FAILURE;
 
     // open the log file
     openlog("rgb_animation", LOG_PID, LOG_DAEMON);
