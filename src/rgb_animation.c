@@ -1,6 +1,4 @@
-#include <stdlib.h>
 #include <string.h>
-#include <strings.h>
 #include <syslog.h>
 #include <unistd.h>
 
@@ -30,7 +28,7 @@ int load_colors(FILE *f, char colors[4][7]) {
 
 int main() {
     // obtaining the color file path
-    STR_MAKE_SAFE_M(colorpath, GET_HOME_DIR_M(), STR_MAX_LEN);
+    STRCPY_SAFE_M(colorpath, GET_HOME_DIR_M(), STR_MAX_LEN);
     strcat(colorpath, COLOR_FILE);
 
     // obtaining the color from the saved configuration
@@ -42,8 +40,8 @@ int main() {
                 return EXIT_FAILURE);
 
     // executing as a daemon
-    if(run_daemon() == EXIT_FAILURE)
-        return EXIT_FAILURE;
+    // if(run_daemon() == EXIT_FAILURE)
+    //     return EXIT_FAILURE;
 
     // open the log file
     openlog("rgb_animation", LOG_PID, LOG_DAEMON);

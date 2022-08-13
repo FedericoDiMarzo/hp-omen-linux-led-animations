@@ -14,6 +14,8 @@
 
 /**
  * @brief Transforms a process into a daemon.
+ * 
+ * @return int error message
  */
 int run_daemon() {
     pid_t pid;
@@ -63,16 +65,7 @@ int run_daemon() {
 
     // write the PID on a file
     pid_t daemon_pid = getpid();
-    // WITH_FILE_M(f, DAEMON_PID_FILE, "w", fprintf(f, "%d", daemon_pid), return EXIT_FAILURE);
-    do {
-        FILE *f = fopen("/var/lib/rgb_keyboard/daemon_pid", "w");
-        if (f == NULL) {
-            return 1;
-            break;
-        }
-        fprintf(f, "%d", daemon_pid);
-        fclose(f);
-    } while (0);
+    WITH_FILE_M(f, DAEMON_PID_FILE, "w", fprintf(f, "%d", daemon_pid), return EXIT_FAILURE);
 
     return EXIT_SUCCESS;
 }
