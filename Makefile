@@ -1,3 +1,5 @@
+TARGET_NAME := _rgb_keyboard_animation
+
 # tool macros
 CC ?= gcc
 CCFLAGS := # FILL: compile flags
@@ -9,9 +11,14 @@ BIN_PATH := bin
 OBJ_PATH := obj
 SRC_PATH := src
 DBG_PATH := debug
+SCRIPT_ORIG := scripts/rgb_keyboard.sh
+SCRIPT_DEST := /bin/rgb_keyboard
+VAR_DATA_PATH := /var/lib/rgb_keyboard
+TARGET_ORIG := $(BIN_PATH)/$(TARGET_NAME)
+TARGET_DEST := /bin/$(TARGET_NAME)
+
 
 # compile macros
-TARGET_NAME := rgb_animation
 TARGET := $(BIN_PATH)/$(TARGET_NAME)
 TARGET_DEBUG := $(DBG_PATH)/$(TARGET_NAME)
 
@@ -64,15 +71,13 @@ distclean:
 	@echo CLEAN $(DISTCLEAN_LIST)
 	@rm -f $(DISTCLEAN_LIST)
 
-SCRIPT_ORIG=scripts/rgb_keyboard.sh
-SCRIPT_DEST=/bin/rgb_keyboard
-
-install: 
+install: all
+	mkdir $(VAR_DATA_PATH)
 	cp $(SCRIPT_ORIG) $(SCRIPT_DEST)
+	cp $(TARGET_ORIG) $(TARGET_DEST)
 	chmod +x $(SCRIPT_DEST)
-	gcc -o src/rgb_animation src/rgb_animation.c
-	dkms install .
+	# dkms install .
 
-uninstall:
-	rm -rf $(SCRIPT_DEST) $(RGB_DEFAULT)
-	dkms remove hp-omen-wmi/0.9 --all
+uninstall: clean
+	rm -rf $(TARGET_DEST) $(SCRIPT_DEST) $(RGB_DEFAULT) $(VAR_DATA_PATH)
+	# dkms remove hp-omen-wmi/0.9 --all
