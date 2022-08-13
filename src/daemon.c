@@ -1,3 +1,5 @@
+#include "daemon.h"
+
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,12 +8,14 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "daemon.h"
+#include "utils.h"
+
+#define DAEMON_PID_FILE "/var/lib/rgb_keyboard/daemon_pid"
 
 /**
  * @brief Transforms a process into a daemon.
  */
-void run_daemon() {
+int run_daemon() {
     pid_t pid;
 
     // Fork off the parent process
@@ -56,4 +60,19 @@ void run_daemon() {
     for (x = sysconf(_SC_OPEN_MAX); x >= 0; x--) {
         close(x);
     }
+
+    // write the PID on a file
+    pid_t daemon_pid = getpid();
+    // WITH_FILE_M(f, DAEMON_PID_FILE, "w", fprintf(f, "%d", daemon_pid), return EXIT_FAILURE);
+    do {
+        FILE *f = fopen("/var/lib/rgb_keyboard/daemon_pid", "w");
+        if (f == NULL) {
+            return 1;
+            break;
+        }
+        fprintf(f, "%d", daemon_pid);
+        fclose(f);
+    } while (0);
+
+    return EXIT_SUCCESS;
 }

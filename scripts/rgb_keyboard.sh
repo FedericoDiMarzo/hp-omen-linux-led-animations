@@ -1,19 +1,21 @@
 #!/bin/bash
+
+# paths
+colordir="$HOME/.rgb_keyboard"
+colorfile="$colordir/rgb_default"
+daemonfile="/var/lib/rgb_keyboard/daemon_pid"
+
 function usage {
-    echo "usage: $0 [-h|-d|-s]  [<hex0> <hex1> <hex2> <hex3>]"
+    echo "usage: $0 [-h|-d|-s] [-a stop|<animation-type> <animation-speed>] [<hex0> <hex1> <hex2> <hex3>]"
     echo "-h    show help"
     echo "-s    save default colors"
     echo "-d    load default colors"
+    echo "-a    stop or start a keyboard rgb animation"
     exit 1
 }
 
-# dirs
-colordir="$HOME/.rgb_default"
-colorfile="$colordir/rgb_default.txt"
-
-
 function save_default {
-    mkdir -p "$colordir"
+    sudo mkdir -p "$colordir"
     echo $2 > "$colorfile"
     echo $3 >> "$colorfile"
     echo $1 >> "$colorfile"
@@ -35,12 +37,36 @@ function load_default {
     exit 0
 }
 
-while getopts ":sd" o; do
+function animations {
+    [ -f "$colorfile" ] || $(echo "save default colors first" ; exit 1)
+
+    case $1 in
+        "stop")
+            if [ -f "$daemonfile" ]; then
+                sudo kill $(cat "$daemonfile")
+                sudo rm "$daemonfile"
+                echo "keyboard rgb animation stopped"
+                rgb_keyboard -d
+            else
+                echo "no keyboard rgb animation running"
+            fi ;;
+        "steps")
+            sudo _rgb_keyboard_animation $1 $2 ;;
+        *)
+            echo "the following keyboard rgb animations are supported:"
+            echo "steps" ;;
+    esac
+    exit 0
+}
+
+while getopts ":sda:" o; do
     case "${o}" in
         s)
             save_default $2 $3 $4 $5;;
         d)
             load_default ;;
+        a) 
+            animations ${OPTARG};;
         *)
             usage ;;
     esac

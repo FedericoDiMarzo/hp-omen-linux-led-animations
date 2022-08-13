@@ -3,4 +3,4 @@
 /**
  * @brief Transforms a process into a daemon.
  */
-void run_daemon();
+int run_daemon();
