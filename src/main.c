@@ -43,10 +43,21 @@ int main(int argc, char** argv) {
         steps(colors, frequency);
     else if (strcmp(animation, "strobo") == 0)
         strobo(colors, frequency);
+    else if (strcmp(animation, "breath") == 0)
+        breath(colors, frequency);
     else {
         printf("%s animation does not exist\n", animation);
         return EXIT_FAILURE;
     }
+
+    float xs[] = {1.0, 1, 4, 1.9};
+    for (int keep = 1,
+             i = 0,
+             size = sizeof(xs) / sizeof *(xs);
+         keep && i != size;
+         keep = !keep, i++)
+        for (float x = *((xs) + i); keep; keep = !keep)
+            break;
 
     // closing the log file
     syslog(LOG_NOTICE, "rgb_animation terminated");

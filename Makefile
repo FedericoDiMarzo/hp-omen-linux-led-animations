@@ -2,9 +2,11 @@ TARGET_NAME := _rgb_keyboard_animation
 
 # tool macros
 CC ?= gcc
-CCFLAGS := # FILL: compile flags
-DBGFLAGS := -g
+CCFLAGS :=
+DBGFLAGS := -g 
 CCOBJFLAGS := $(CCFLAGS) -c
+CCOPTIMIZATION := -O3
+LIBFLAGS := -lm
 
 # path macros
 BIN_PATH := bin
@@ -39,16 +41,16 @@ default: makedir all
 
 # non-phony targets
 $(TARGET): $(OBJ)
-	$(CC) -o $@ $(OBJ) $(CCFLAGS)
+	$(CC) -o $@ $(OBJ) $(CCFLAGS) $(CCOPTIMIZATION) $(LIBFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c*
 	$(CC) $(CCOBJFLAGS) -o $@ $<
 
 $(DBG_PATH)/%.o: $(SRC_PATH)/%.c*
-	$(CC) $(CCOBJFLAGS) $(DBGFLAGS) -o $@ $<
+	$(CC) $(CCOBJFLAGS) $(DBGFLAGS) -o $@ $< 
 
 $(TARGET_DEBUG): $(OBJ_DEBUG)
-	$(CC) $(CCFLAGS) $(DBGFLAGS) $(OBJ_DEBUG) -o $@
+	$(CC) $(CCFLAGS) $(DBGFLAGS) $(OBJ_DEBUG) -o $@ $(LIBFLAGS)
 
 # phony rules
 .PHONY: makedir

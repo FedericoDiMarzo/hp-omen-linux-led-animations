@@ -16,9 +16,9 @@ function usage {
 
 function save_default {
     sudo mkdir -p "$colordir"
-    echo $2 > "$colorfile"
+    echo $1 > "$colorfile"
+    echo $2 >> "$colorfile"
     echo $3 >> "$colorfile"
-    echo $1 >> "$colorfile"
     echo $4 >> "$colorfile"
     echo "default keyboard color configuration saved"
 }
