@@ -25,10 +25,10 @@ int main(int argc, char** argv) {
     // obtaining the color from the saved configuration
     char colors[4][7];
     WITH_FILE_M(f, colorpath, "r",
-                // file open success
-                load_colors(f, colors),
                 // file open failure
-                return EXIT_FAILURE);
+                return EXIT_FAILURE,
+                // file open success
+                load_colors(f, colors));
 
     // executing as a daemon
     // if(run_daemon() == EXIT_FAILURE)
@@ -45,6 +45,8 @@ int main(int argc, char** argv) {
         strobo(colors, frequency);
     else if (strcmp(animation, "breath") == 0)
         breath(colors, frequency);
+    else if (strcmp(animation, "wave_uniform") == 0)
+        wave_uniform(colors, frequency);
     else {
         printf("%s animation does not exist\n", animation);
         return EXIT_FAILURE;

@@ -119,15 +119,15 @@
  * @param PARSER parser macro
  * @param S input string
  * @param RES result of the parsin
- * @param CODE_ERROR code to execute in case of errors
+ * @param __VA_ARGS__ code to execute in case of errors
  */
-#define STR_TRYPARSE_M(PARSER, S, RES, CODE_ERROR) \
-    do {                                           \
-        char* str_end[1];                          \
-        RES = PARSER(S, str_end);                  \
-        if (*str_end == S) {                       \
-            CODE_ERROR;                            \
-        }                                          \
+#define STR_TRYPARSE_M(PARSER, S, RES, ...) \
+    do {                                    \
+        char* str_end[1];                   \
+        RES = PARSER(S, str_end);           \
+        if (*str_end == S) {                \
+            __VA_ARGS__;                    \
+        }                                   \
     } while (0)
 
 /**
@@ -156,18 +156,18 @@
  * @param F name of the file pointer to open
  * @param PATH path to the file to open
  * @param MODE mode parameter of fopen
- * @param CODE_SUCCESS code to execute in case open success
  * @param CODE_ERROR code to execute in case open error
+ * @param __VA_ARGS__ code to execute in case open success
  */
-#define WITH_FILE_M(F, PATH, MODE, CODE_SUCCESS, CODE_ERROR) \
-    do {                                                     \
-        FILE* F = fopen(PATH, MODE);                         \
-        if (F == NULL) {                                     \
-            CODE_ERROR;                                      \
-            break;                                           \
-        }                                                    \
-        CODE_SUCCESS;                                        \
-        fclose(F);                                           \
+#define WITH_FILE_M(F, PATH, MODE, CODE_ERROR, ...) \
+    do {                                            \
+        FILE* F = fopen(PATH, MODE);                \
+        if (F == NULL) {                            \
+            CODE_ERROR;                             \
+            break;                                  \
+        }                                           \
+        __VA_ARGS__;                                \
+        fclose(F);                                  \
     } while (0)
 
 /**

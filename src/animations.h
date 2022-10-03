@@ -23,7 +23,7 @@ typedef struct RGB {
 #define SET_COLOR_M(COLOR, ZONE)                                                       \
     do {                                                                               \
         STRCPY_SAFE_M(safecolor, COLOR, HEXLEN);                                       \
-        WITH_FILE_M(f, RGB_ZONE_PATH_##ZONE, "w", fprintf(f, "%s", safecolor), break); \
+        WITH_FILE_M(f, RGB_ZONE_PATH_##ZONE, "w", break, fprintf(f, "%s", safecolor)); \
     } while (0);
 
 /**
@@ -86,3 +86,12 @@ int strobo(char colors[4][7], float frequency);
  * @return int error message
  */
 int breath(char colors[4][7], float frequency);
+
+/**
+ * @brief Waves RGB animation
+ *
+ * @param colors array of colors
+ * @param frequency frequency of color change
+ * @return int error message
+ */
+int wave_uniform(char colors[4][7], float frequency);
