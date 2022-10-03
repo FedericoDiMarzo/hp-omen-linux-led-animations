@@ -78,7 +78,7 @@ install: all
 	cp $(SCRIPT_ORIG) $(SCRIPT_DEST)
 	cp $(TARGET_ORIG) $(TARGET_DEST)
 	chmod +x $(SCRIPT_DEST)
-	# dkms install .
+	dkms install .
 
 uninstall: clean
 	rm -rf $(TARGET_DEST) $(SCRIPT_DEST) $(RGB_DEFAULT) $(VAR_DATA_PATH)
