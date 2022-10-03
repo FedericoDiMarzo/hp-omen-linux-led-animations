@@ -82,4 +82,4 @@ install: all
 
 uninstall: clean
 	rm -rf $(TARGET_DEST) $(SCRIPT_DEST) $(RGB_DEFAULT) $(VAR_DATA_PATH)
-	# dkms remove hp-omen-wmi/0.9 --all
+	dkms remove hp-omen-wmi/0.9 --all
