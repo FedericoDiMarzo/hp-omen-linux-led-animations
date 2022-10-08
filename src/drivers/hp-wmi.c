@@ -1081,9 +1081,6 @@ static int fourzone_setup(struct platform_device *dev)
   if (!quirks->fourzone)
     return 0;
 
-  // global_led.max_brightness = 0x0F;
-  // global_brightness = global_led.max_brightness;
-
   /*
    *      - zone_dev_attrs num_zones + 1 is for individual zones and then
    *        null terminated
