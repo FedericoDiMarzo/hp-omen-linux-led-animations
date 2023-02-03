@@ -13,3 +13,4 @@ iasl
 .vscode
 /bin
 /debug
+*.swp
